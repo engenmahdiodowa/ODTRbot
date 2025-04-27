@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ODTR Bot Dashboard</title>
+    <link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+    <header>
+        <h1>ODTR Trading Bot Dashboard</h1>
+        <p>Welcome to your trading bot dashboard. Here you can view the status, portfolio, and trade history.</p>
+    </header>
+
+    <section id="status">
+        <h2>Status</h2>
+        <p id="botStatus">Bot is currently offline...</p>
+    </section>
+
+    <section id="portfolio">
+        <h2>Portfolio</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Asset</th>
+                    <th>Amount</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody id="portfolioList">
+                <!-- Dynamic content will go here -->
+            </tbody>
+        </table>
+    </section>
+
+    <section id="trade-history">
+        <h2>Trade History</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Trade</th>
+                    <th>Amount</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody id="tradeHistoryList">
+                <!-- Dynamic content will go here -->
+            </tbody>
+        </table>
+    </section>
+
+    <footer>
+        <p>Powered by ODTR Bot</p>
+    </footer>
+
+    <script>
+        // Script to fetch and update bot status, portfolio, and trade history dynamically
+        window.onload = () => {
+            fetch('/status').then(response => response.json()).then(data => {
+                document.getElementById('botStatus').innerText = data.status;
+                updatePortfolio(data.portfolio);
+                updateTradeHistory(data.tradeHistory);
+            });
+
+            function updatePortfolio(portfolio) {
+                const portfolioList = document.getElementById('portfolioList');
+                portfolioList.innerHTML = '';
+                portfolio.forEach(item => {
+                    portfolioList.innerHTML += `<tr><td>${item.asset}</td><td>${item.amount}</td><td>${item.value}</td></tr>`;
+                });
+            }
+
+            function updateTradeHistory(tradeHistory) {
+                const tradeHistoryList = document.getElementById('tradeHistoryList');
+                tradeHistoryList.innerHTML = '';
+                tradeHistory.forEach(item => {
+                    tradeHistoryList.innerHTML += `<tr><td>${item.time}</td><td>${item.trade}</td><td>${item.amount}</td><td>${item.price}</td></tr>`;
+                });
+            }
+        };
+    </script>
+</body>
+</html>
